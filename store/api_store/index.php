@@ -12,21 +12,22 @@ $app = new \Slim\App($container);
 
 
 
-//------------------catgorie-----------------
+//------------------Commande-----------------
 //----
-$app->get('/categories[/]',
+$app->get('/commandes[/]',
 
-    \lbs\controllers\CategorieController::class . ':getCategories'
-
-);
-
-//---
-$app->get('/categories/{id}[/]',
-
-    \lbs\controllers\CategorieController::class . ':getCategorie'
+    \lbs\controllers\CommandeController::class . ':getCommandes'
 
 );
 
+ //---
+$app->get('/commandes/{id}[/]',
+
+    \lbs\controllers\CommandeController::class . ':getCommande'
+
+);
+
+/*
 //----
 $app->post('/categories[/]',
 
@@ -48,7 +49,7 @@ $app->get('/sandwichs/{id}[/]',
   \lbs\controllers\SandwichController::class . ':getSandwich'
 
 );
-
+ */
 
 
 

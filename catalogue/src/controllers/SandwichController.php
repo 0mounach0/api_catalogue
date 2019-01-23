@@ -14,8 +14,33 @@ class SandwichController extends Controller {
 
         try{
 
-            $sand = Sandwich::select()->get();
-            
+            $type_pain = $req->getQueryParam('type_pain', null);
+            $prix_max = $req->getQueryParam('prix_max', null);
+            $page = $req->getQueryParam('page', 1);
+            $size = $req->getQueryParam('size', 5);
+
+            $sand = Sandwich::select();
+
+            if(!is_null($type_pain))
+                $sand = $sand->where('type_pain','like','%'.$type_pain.'%');
+
+            if(!is_null($prix_max))
+                $sand = $sand->where('prix','<=',$prix_max);
+
+            $total = $sand->count();
+
+            $nbpageMax = ceil($total/$size);
+
+            if($page > $nbpageMax){
+                $page = $nbpageMax;
+            }
+               
+            $sand = $sand->skip(($page - 1) * $size)->take($size);
+
+            $countSize = $sand->count();
+
+            $sand = $sand->get();
+
             $data = ['type' => 'resource',
                 'meta' => ['date' =>date('d-m-Y')],
                 'sandwichs' => $sand->toArray()

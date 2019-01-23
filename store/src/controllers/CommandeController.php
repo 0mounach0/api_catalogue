@@ -1,21 +1,21 @@
 <?php
 namespace lbs\controllers;
 
-use lbs\models\Categorie;
+use lbs\models\Commande;
 
-class CategorieController extends Controller {
+class CommandeController extends Controller {
 
-//----------------categorie------------------------------------
-    //---------get all categories-------
-    public function getCategories($req, $resp, $args){
+//----------------Commande------------------------------------
+    //---------get all Commandes-------
+    public function getCommandes($req, $resp, $args){
 
         try{
 
-            $cat = Categorie::select()->get();
+            $cmd = Commande::select()->get();
             
             $data = ['type' => 'resource',
                 'meta' => ['date' =>date('d-m-Y')],
-                'categorie' => $cat->toArray()
+                'Commande' => $cmd->toArray()
             ];
 
             return $this->jsonOutup($resp, 200, $data);
@@ -27,17 +27,19 @@ class CategorieController extends Controller {
     }
 
 
-    //---------get categorie by id---------
-    public function getCategorie($req, $resp, $args){
+    //---------get commande by id and commande items---------
+    public function getCommande($req, $resp, $args){
 
         try{
 
-            $cat = Categorie::where('id','=',$args['id'])->firstOrFail();
+            $cmd = Commande::where('id','=',$args['id'])->firstOrFail();
+            $items = $cmd->items()->get();
             
          
                 $data = ['type' => 'resource',
                 'meta' => ['date' =>date('d-m-Y')],
-                'categorie' => $cat->toArray()
+                'categorie' => $cmd->toArray(),
+                'item' => $items->toArray()
             ];
             
 
@@ -49,7 +51,7 @@ class CategorieController extends Controller {
             $data = [
                 'type' => 'error',
                 'error' => 404,
-                'message' => 'ressource non disponible : /categorie/ '. $args['id']
+                'message' => 'ressource non disponible : /Commande/ '. $args['id']
             ];
 
             return $this->jsonOutup($resp, 404, $data);
@@ -58,7 +60,7 @@ class CategorieController extends Controller {
         }
 
     }
-
+/* 
     //---------create categorie-----------
     public function createCategorie($req, $resp, $args){
 
@@ -98,7 +100,7 @@ class CategorieController extends Controller {
 
         }
 
-    }
+    } */
 
 
 
