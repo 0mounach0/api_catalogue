@@ -13,7 +13,7 @@ class Controller {
     public function jsonOutup($response, $code, $data){
         $response->withHeader('Content-Type', 'application/json;charset=utf-8');
         $response->withStatus($code);
-        $response->getBody()->write(json_encode($data));
+        $response->getBody()->write(json_encode($data,JSON_UNESCAPED_SLASHES));
     }
 
 }

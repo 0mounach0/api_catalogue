@@ -41,9 +41,24 @@ class SandwichController extends Controller {
 
             $sand = $sand->get();
 
-            $data = ['type' => 'resource',
-                'meta' => ['date' =>date('d-m-Y')],
-                'sandwichs' => $sand->toArray()
+            $mySand = [];
+
+            foreach ($sand->toArray() as $key => $value) {
+                $mySand[] = [
+                    "sandwich" =>  $value,
+                    'links' => [
+                        "self" => [ "href" => "/sandwichs/".$value['id']."/"] 
+                    ]
+                ];
+            }
+
+            $data = [
+                "type"  => "collection",
+                "count" => $total,
+                "size"  => $size,
+                "page"  => $page,
+                "maxPages" => $nbpageMax,
+                'sandwichs' => $mySand
             ];
 
             return $this->jsonOutup($resp, 200, $data);
@@ -67,8 +82,12 @@ class SandwichController extends Controller {
             
          
                 $data = ['type' => 'resource',
-                'meta' => ['date' =>date('d-m-Y')],
-                'sandwich' => $sand->toArray()
+                'date' => date('d-m-Y'),
+                'sandwich' => $sand->toArray(),
+                "links"=> [
+                    "categories"=> [ "href" => "/sandwichs/".$args['id']."/categories/" ],
+                    "self" => [ "href" => "/sandwichs/".$args['id']."/" ]
+                ]
             ];
             
 

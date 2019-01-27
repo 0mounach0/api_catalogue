@@ -20,7 +20,13 @@ $app->post('/commandes[/]',
 
 );
 
- //---
+$app->get('/test[/]',
+
+    \lbs\controllers\CommandeController::class . ':test'
+
+);
+
+/*  //---
 $app->get('/commandes/{id}[/]',
 
     \lbs\controllers\CommandeController::class . ':getCommande'
@@ -33,7 +39,7 @@ $app->patch('/commandes/{id}[/]',
 
     \lbs\controllers\CommandeController::class . ':updateStatus'
 
-);
+); */
 
 
 

@@ -11,11 +11,61 @@ class CommandeController extends Controller {
 
         try{
 
-            $cmd = Commande::select()->get();
-            
-            $data = ['type' => 'resource',
-                'meta' => ['date' =>date('d-m-Y')],
-                'Commande' => $cmd->toArray()
+            $cmd = Commande::select('id', 'nom', 'created_at', 'livraison', 'status');
+
+            $status = $req->getQueryParam('s', null);
+            $page = $req->getQueryParam('page', 1);
+            $size = $req->getQueryParam('size', 10);
+
+            if(!is_null($status))
+                $cmd = $cmd->where('status', '=', $status);
+
+            $total = $cmd->count();
+
+            $nbpageMax = ceil($total/$size);
+
+            if($page > $nbpageMax){
+                $page = $nbpageMax;
+            }
+               
+            $cmd = $cmd->skip(($page - 1) * $size)->take($size);
+
+            $countSize = $cmd->count();
+
+            $cmd = $cmd->get();
+
+            $myCmd = [];
+
+            foreach ($cmd->toArray() as $key => $value) {
+                $myCmd[] = [
+                    "commande" =>  $value,
+                    'links' => [
+                        "self" => [ "href" => "/commandes/".$value['id']."/"] 
+                    ]
+                ];
+            }
+
+            $data = [
+                "type"  => "collection",
+                "count" => $total,
+                "size"  => $size,
+                "page"  => $page,
+                "maxPages" => $nbpageMax,
+                "links" => [
+                    "next" => [
+                    "href" => "/commandes/?page=".(($page >= $nbpageMax) ? $nbpageMax : ($page+1))."&size=".$size
+                        ],
+                    "prev"=> [
+                    "href"=> "/commandes/?page=".(($page <= 1) ? 1 : ($page-1))."&size=".$size
+                ],
+                    "last"=> [
+                    "href"=> "/commandes/?page=".$nbpageMax."&size=".$size
+                ],
+                    "first"=> [
+                    "href"=> "/commandes/?page=1&size=".$size
+                    ]
+                    ],
+                'commandes' => $myCmd
             ];
 
             return $this->jsonOutup($resp, 200, $data);
@@ -32,14 +82,29 @@ class CommandeController extends Controller {
 
         try{
 
-            $cmd = Commande::where('id','=',$args['id'])->firstOrFail();
-            $items = $cmd->items()->get();
+            $cmd = Commande::select('id', 'created_at','livraison','nom','mail','montant')
+                        ->where('id','=',$args['id'])->firstOrFail();
+
+            $items = $cmd->items()->select('uri','libelle','tarif','quantite')->get();
+            
+            $myCmd = [
+                'id' => $cmd->toArray()['id'], 
+                'created_at' => $cmd->toArray()['created_at'],
+                'livraison' => $cmd->toArray()['livraison'],
+                'nom'=> $cmd->toArray()['nom'],
+                'mail'=> $cmd->toArray()['mail'],
+                'montant' => $cmd->toArray()['montant'],
+                'items' => $items->toArray()
+            ];
             
          
                 $data = ['type' => 'resource',
-                'meta' => ['date' =>date('d-m-Y')],
-                'commande' => $cmd->toArray(),
-                'item' => $items->toArray()
+                'date' =>date('d-m-Y'),
+                "links"=> [
+                    "self"  => "/commandes/".$args['id']."/",
+                    "items" => "/commandes/".$args['id']."/items/"
+                ],
+                'commande' => $myCmd
             ];
             
 

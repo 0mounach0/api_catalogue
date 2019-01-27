@@ -12,9 +12,11 @@ class CategorieController extends Controller {
         try{
 
             $cat = Categorie::select()->get();
-            
-            $data = ['type' => 'resource',
-                'meta' => ['date' =>date('d-m-Y')],
+            $total = $cat->count();
+            $data = [
+                'type' => 'collection',
+                'date' =>date('d-m-Y'),
+                'count' => $total,
                 'categories' => $cat->toArray()
             ];
 
@@ -35,9 +37,14 @@ class CategorieController extends Controller {
             $cat = Categorie::where('id','=',$args['id'])->firstOrFail();
             
          
-                $data = ['type' => 'resource',
-                'meta' => ['date' =>date('d-m-Y')],
-                'categorie' => $cat->toArray()
+                $data = [
+                    'type' => 'resource',
+                    'date' => date('d-m-Y'),
+                    'categorie' => $cat->toArray(),
+                    "links"=> [
+                        "sandwichs"=> [ "href" => "/categories/".$args['id']."/sandwichs/" ],
+                        "self" => [ "href" => "/categories/".$args['id']."/" ]
+                    ]
             ];
             
 
@@ -112,7 +119,7 @@ class CategorieController extends Controller {
             $categorie->nom = filter_var($jsonData['nom'], FILTER_SANITIZE_STRING);
             $categorie->description = filter_var($jsonData['description'], FILTER_SANITIZE_STRING);
 
-            // Create catetgorie
+            // update catetgorie
             if($categorie->save()) {
 
                 $data = ['type' => 'resource',
