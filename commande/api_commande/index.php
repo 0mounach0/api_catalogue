@@ -12,42 +12,29 @@ $app = new \Slim\App($container);
 
 
 
-//------------------catgorie-----------------
+//------------------Commande-----------------
 //----
-$app->get('/categories[/]',
+$app->post('/commandes[/]',
 
-    \lbs\controllers\CategorieController::class . ':getCategories'
+    \lbs\controllers\CommandeController::class . ':createCommande'
+
+);
+
+ //---
+$app->get('/commandes/{id}[/]',
+
+    \lbs\controllers\CommandeController::class . ':getCommande'
 
 );
 
-//---
-$app->get('/categories/{id}[/]',
-
-    \lbs\controllers\CategorieController::class . ':getCategorie'
-
-);
 
 //----
-$app->post('/categories[/]',
+$app->patch('/commandes/{id}[/]',
 
-    \lbs\controllers\CategorieController::class . ':createCategorie'
-
-);
-
-//-----------------sandwich---------------------
-//---
-$app->get('/sandwichs[/]',
-
-    \lbs\controllers\SandwichController::class . ':getSandwichs'
+    \lbs\controllers\CommandeController::class . ':updateStatus'
 
 );
 
-//---
-$app->get('/sandwichs/{id}[/]',
-
-  \lbs\controllers\SandwichController::class . ':getSandwich'
-
-);
 
 
 

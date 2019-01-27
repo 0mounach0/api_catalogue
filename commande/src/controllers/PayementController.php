@@ -1,21 +1,21 @@
 <?php
 namespace lbs\controllers;
 
-use lbs\models\Categorie;
+use lbs\models\Commande;
 
-class CategorieController extends Controller {
+class PayementController extends Controller {
 
-//----------------categorie------------------------------------
-    //---------get all categories-------
-    public function getCategories($req, $resp, $args){
+//----------------Payement------------------------------------
+
+/* public function getCommandes($req, $resp, $args){
 
         try{
 
-            $cat = Categorie::select()->get();
+            $cmd = Commande::select()->get();
             
             $data = ['type' => 'resource',
                 'meta' => ['date' =>date('d-m-Y')],
-                'categorie' => $cat->toArray()
+                'Commande' => $cmd->toArray()
             ];
 
             return $this->jsonOutup($resp, 200, $data);
@@ -27,17 +27,19 @@ class CategorieController extends Controller {
     }
 
 
-    //---------get categorie by id---------
-    public function getCategorie($req, $resp, $args){
+    //---------get commande by id and commande items---------
+    public function getCommande($req, $resp, $args){
 
         try{
 
-            $cat = Categorie::where('id','=',$args['id'])->firstOrFail();
+            $cmd = Commande::where('id','=',$args['id'])->firstOrFail();
+            $items = $cmd->items()->get();
             
          
                 $data = ['type' => 'resource',
                 'meta' => ['date' =>date('d-m-Y')],
-                'categorie' => $cat->toArray()
+                'commande' => $cmd->toArray(),
+                'item' => $items->toArray()
             ];
             
 
@@ -49,7 +51,7 @@ class CategorieController extends Controller {
             $data = [
                 'type' => 'error',
                 'error' => 404,
-                'message' => 'ressource non disponible : /categorie/ '. $args['id']
+                'message' => 'ressource non disponible : /Commande/ '. $args['id']
             ];
 
             return $this->jsonOutup($resp, 404, $data);
@@ -60,23 +62,22 @@ class CategorieController extends Controller {
     }
 
     //---------create categorie-----------
-    public function createCategorie($req, $resp, $args){
+    public function updateStatus($req, $resp, $args){
 
         try{
 
             $jsonData = $req->getParsedBody();
 
-            $categorie = new Categorie();
+            $cmd = Commande::where('id','=',$args['id'])->firstOrFail();
 
-            $categorie->nom = filter_var($jsonData['nom'], FILTER_SANITIZE_STRING);
-            $categorie->description = filter_var($jsonData['description'], FILTER_SANITIZE_STRING);
+            $cmd->status = filter_var($jsonData['status'], FILTER_VALIDATE_INT);
 
-            // Create catetgorie
-            if($categorie->save()) {
+            // update status
+            if($cmd->save()) {
 
                 $data = ['type' => 'resource',
                 'meta' => ['date' =>date('d-m-Y')],
-                'categorie' => $categorie->toArray()
+                'commande' => $cmd->toArray()
                 ];
 
                 return $this->jsonOutup($resp, 201, $data);
@@ -85,7 +86,7 @@ class CategorieController extends Controller {
 
                 $data = ['type' => 'resource',
                 'meta' => ['date' =>date('d-m-Y')],
-                'message' => 'categorie Not Created'
+                'message' => 'status Not updated'
                 ];
 
                 return $this->jsonOutup($resp, 400, $data);
@@ -97,8 +98,8 @@ class CategorieController extends Controller {
 
 
         }
-
-    }
+ */
+    } 
 
 
 

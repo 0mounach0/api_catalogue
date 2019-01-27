@@ -6,19 +6,44 @@ use lbs\models\Commande;
 class CommandeController extends Controller {
 
 //----------------Commande------------------------------------
-    //---------get all Commandes-------
-    public function getCommandes($req, $resp, $args){
+    //---------Create Commande-------
+    public function createCommande($req, $resp, $args){
 
         try{
 
-            $cmd = Commande::select()->get();
-            
-            $data = ['type' => 'resource',
-                'meta' => ['date' =>date('d-m-Y')],
-                'Commande' => $cmd->toArray()
-            ];
+            $jsonData = $req->getParsedBody();
 
-            return $this->jsonOutup($resp, 200, $data);
+            if (!isset($jsonData['nom_client'])) return $response->withStatus(400);
+            if (!isset($jsonData['mail_client'])) return $response->withStatus(400);
+            if (!isset($jsonData['date'])) return $response->withStatus(400);
+            if (!isset($jsonData['heure'])) return $response->withStatus(400);
+
+            $cmd = new Commande();
+            $cmd->id = Uuid::uuid4();
+            $cmd->nom_client = filter_var($jsonData['nom_client'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $cmd->mail_client = filter_var($jsonData['mail_client'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $cmd->date = filter_var($jsonData['date'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $cmd->token = bin2hex(openssl_random_pseudo_bytes(32));
+            
+
+            // Create commande
+            if($cmd->save()) {
+
+                $data = ['type' => 'resource',
+                'meta' => ['date' =>date('d-m-Y')],
+                'commande' => $cmd->toArray()
+                ];
+
+                return $this->jsonOutup($resp, 201, $data);
+
+            }else {
+
+                $data = ['type' => 'resource',
+                'meta' => ['date' =>date('d-m-Y')],
+                'message' => 'commande Not Created'
+                ];
+
+                return $this->jsonOutup($resp, 400, $data);
             
         }catch(\Exception $e){
 

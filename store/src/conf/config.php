@@ -1,4 +1,5 @@
 <?php  
+
 $init = parse_ini_file("config.ini");
 
 $config = [
@@ -16,9 +17,36 @@ $config = [
             'prefix'    => '' 
         ]
         ],
-        "notAllowedHandler" =>function($c){
-            return function($req,$resp){
-                \lbs\errors\BadUri::error($req,$resp);
+
+        'notFoundHandler' => function($c) {
+            return function ($req, $resp) use ($c) {
+             
+                return \lbs\errors\NotFound::error($req, $resp);
+
+            };
+        },
+    
+        'notAllowedHandler' => function($c) {
+            return function (  $req,  $resp, $methods) {
+                
+                return \lbs\errors\NotFound::error($req, $resp, $methods);
+
+            };
+        },
+    
+        'badRequestHandler' => function($c) {
+            return function (  $req,  $resp) {
+                
+                return \lbs\errors\NotFound::error($req, $resp);
+
+            };
+        },
+    
+        'errorHandler' => function ($c) {
+            return function ($req, $resp, $exception) use ($c) {
+                  
+                return \lbs\errors\NotFound::error($req, $resp, $exception);
+
             };
         }
     ];

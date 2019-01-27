@@ -27,29 +27,15 @@ $app->get('/commandes/{id}[/]',
 
 );
 
-/*
+
 //----
-$app->post('/categories[/]',
+$app->patch('/commandes/{id}[/]',
 
-    \lbs\controllers\CategorieController::class . ':createCategorie'
-
-);
-
-//-----------------sandwich---------------------
-//---
-$app->get('/sandwichs[/]',
-
-    \lbs\controllers\SandwichController::class . ':getSandwichs'
+    \lbs\controllers\CommandeController::class . ':updateStatus'
 
 );
 
-//---
-$app->get('/sandwichs/{id}[/]',
 
-  \lbs\controllers\SandwichController::class . ':getSandwich'
-
-);
- */
 
 
 
