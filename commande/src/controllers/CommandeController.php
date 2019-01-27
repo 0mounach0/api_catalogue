@@ -2,6 +2,8 @@
 namespace lbs\controllers;
 
 use lbs\models\Commande;
+use lbs\models\Item;
+use Ramsey\Uuid\Uuid;
 
 class CommandeController extends Controller {
 
@@ -13,21 +15,48 @@ class CommandeController extends Controller {
 
             $jsonData = $req->getParsedBody();
 
-            if (!isset($jsonData['nom_client'])) return $response->withStatus(400);
-            if (!isset($jsonData['mail_client'])) return $response->withStatus(400);
-            if (!isset($jsonData['date'])) return $response->withStatus(400);
-            if (!isset($jsonData['heure'])) return $response->withStatus(400);
+            if (!isset($jsonData['nom'])) return $response->withStatus(400);
+            if (!isset($jsonData['mail'])) return $response->withStatus(400);
+            if (!isset($jsonData['livraison'])) return $response->withStatus(400);
+            //if (!isset($jsonData['item'])) return $response->withStatus(400);
 
             $cmd = new Commande();
             $cmd->id = Uuid::uuid4();
-            $cmd->nom_client = filter_var($jsonData['nom_client'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $cmd->mail_client = filter_var($jsonData['mail_client'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $cmd->date = filter_var($jsonData['date'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $cmd->nom = filter_var($jsonData['nom'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $cmd->mail = filter_var($jsonData['mail'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $cmd->created_at = date("Y-m-d H:i:s");
+            $cmd->updated_at = date("Y-m-d H:i:s");
+            $cmd->livraison = filter_var($jsonData['livraison'], FILTER_SANITIZE_SPECIAL_CHARS);
             $cmd->token = bin2hex(openssl_random_pseudo_bytes(32));
             
 
             // Create commande
             if($cmd->save()) {
+
+               /*  foreach ($jsonData['item'] as $key => $i) {
+                    $url = 'http://api.catalogue.local:10080/sandwichs/'.$i['id'];
+                    
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                        'Content-Type: application/json'
+                     ));
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $result = curl_exec($ch);
+                    curl_close($ch);
+               
+                    $sand = json_decode($result, true);
+
+                    $item = new Item();
+                    $item->uri = '/sandwichs/'.$i['id'];
+                    $item->libelle = $sand['sandwich']['nom'];
+                    $item->quantite = $i['qte'];
+                    $item->tarif = $sand['sandwich']['prix'];
+                    $item->command_id = $cmd->id;
+
+                    $item->save();
+                } */
 
                 $data = ['type' => 'resource',
                 'meta' => ['date' =>date('d-m-Y')],
@@ -45,13 +74,17 @@ class CommandeController extends Controller {
 
                 return $this->jsonOutup($resp, 400, $data);
             
+        }
+    
         }catch(\Exception $e){
 
 
         }
     }
 
+   
 
+/*
     //---------get commande by id and commande items---------
     public function getCommande($req, $resp, $args){
 
@@ -126,7 +159,7 @@ class CommandeController extends Controller {
 
     } 
 
-
+*/
 
 
 
