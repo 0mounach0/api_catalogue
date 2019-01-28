@@ -2,6 +2,7 @@
 namespace lbs\controllers;
 
 use lbs\models\Categorie;
+use lbs\models\Sandwich;
 
 class CategorieController extends Controller {
 
@@ -148,6 +149,41 @@ class CategorieController extends Controller {
 
     }
 
+
+    //---------get sandwich categories-------------
+    public function getSandwichCategories($req, $resp, $args){
+
+        try{
+
+            $sand = Sandwich::select()->where('id','=',$args['id'])->firstOrFail();
+
+            $categories = $sand->categories()->get();
+            
+         
+                $data = ['type' => 'resource',
+                'meta' => ['date' =>date('d-m-Y')],
+                'sandwich' => $sand->toArray(),
+                'categories' => $categories->toArray()
+            ];
+            
+
+            return $this->jsonOutup($resp, 200, $data);
+
+
+        }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+
+            $data = [
+                'type' => 'error',
+                'error' => 404,
+                'message' => 'ressource non disponible : /categories/ '. $args['id'] . '/sandwichs'
+            ];
+
+            return $this->jsonOutup($resp, 404, $data);
+
+
+        }
+
+    }
 
 
 

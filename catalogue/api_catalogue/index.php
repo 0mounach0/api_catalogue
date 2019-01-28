@@ -41,6 +41,13 @@ $app->put('/categories/{id}[/]',
 
 );
 
+//---
+$app->get('/sandwichs/{id}/categories[/]',
+
+  \lbs\controllers\CategorieController::class . ':getSandwichCategories'
+
+);
+
 //-----------------sandwich---------------------
 //---
 $app->get('/sandwichs[/]',

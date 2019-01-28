@@ -13,4 +13,26 @@
 * 1 base de données catalogue
 * 1 base de données commandes
 
+## GROUPE :
+    MOUNACH MOUAD
+    AYDIN OKTAY
+    CRISTIANI VINCENT
+    OUALI SALAHEDDINE
+    ISSIAKA KAMATE
+
+## API DOC :
+
+Le Bon Sandwich
+
+I-\ SERVICE DE GESTION DU CATALOGUE :
+
+- http://api.catalogue.local:10080
+
+II-\ SERVICE DE SUIVI de COMMANDES POINT DE VENTE :
+
+- http://api.store.local:10082
+
+III-\ SERVICE DE PRISE DE COMMANDES – mode non identifié :
+
+- http://api.commande.local:10082
 

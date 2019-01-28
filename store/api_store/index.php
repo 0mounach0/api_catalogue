@@ -27,6 +27,12 @@ $app->get('/commandes/{id}[/]',
 
 );
 
+ //---
+ $app->get('/commandes/{id}/items[/]',
+
+    \lbs\controllers\CommandeController::class . ':getCommandeItems'
+
+);
 
 //----
 $app->patch('/commandes/{id}[/]',

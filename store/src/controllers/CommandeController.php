@@ -126,6 +126,44 @@ class CommandeController extends Controller {
 
     }
 
+    //---------get commande items---------
+    public function getCommandeItems($req, $resp, $args){
+
+        try{
+
+            $cmd = Commande::where('id','=',$args['id'])->firstOrFail();
+
+            $items = $cmd->items()->select('uri','libelle','tarif','quantite')->get();
+         
+                $data = [
+                    'type' => 'collection',
+                    'date' =>date('d-m-Y'),
+                    "links"=> [
+                        "self"  => "/commandes/".$args['id']."/items",
+                        "commande" => "/commandes/".$args['id']
+                    ],
+                    'items' => $items->toArray()
+            ];
+            
+
+            return $this->jsonOutup($resp, 200, $data);
+
+
+        }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+
+            $data = [
+                'type' => 'error',
+                'error' => 404,
+                'message' => 'ressource non disponible : /Commande/ '. $args['id']
+            ];
+
+            return $this->jsonOutup($resp, 404, $data);
+
+
+        }
+
+    }
+
     //---------updateStatus-----------
     public function updateStatus($req, $resp, $args){
 
