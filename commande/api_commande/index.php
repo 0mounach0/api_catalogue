@@ -26,14 +26,14 @@ $app->get('/test[/]',
 
 );
 
-/*  //---
+//---
 $app->get('/commandes/{id}[/]',
 
     \lbs\controllers\CommandeController::class . ':getCommande'
 
 );
 
-
+/* 
 //----
 $app->patch('/commandes/{id}[/]',
 

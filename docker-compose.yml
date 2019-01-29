@@ -69,6 +69,7 @@ services:
       - lbs_network
     links :
       - mysql.commande:db_commande
+      - api.catalogue:api.catalogue.local
 
 #########store##########
   api.store:

@@ -82,7 +82,7 @@ class CommandeController extends Controller {
 
         try{
 
-            $cmd = Commande::select('id', 'created_at','livraison','nom','mail','montant')
+            $cmd = Commande::select('id', 'created_at','livraison','nom','mail','montant', 'token')
                         ->where('id','=',$args['id'])->firstOrFail();
 
             $items = $cmd->items()->select('uri','libelle','tarif','quantite')->get();
@@ -94,6 +94,7 @@ class CommandeController extends Controller {
                 'nom'=> $cmd->toArray()['nom'],
                 'mail'=> $cmd->toArray()['mail'],
                 'montant' => $cmd->toArray()['montant'],
+                'token' => $cmd->toArray()['token'],
                 'items' => $items->toArray()
             ];
             

@@ -4,6 +4,7 @@ namespace lbs\controllers;
 use lbs\models\Commande;
 use lbs\models\Item;
 use Ramsey\Uuid\Uuid;
+use GuzzleHttp\Client;
 
 class CommandeController extends Controller {
 
@@ -33,34 +34,49 @@ class CommandeController extends Controller {
             // Create commande
             if($cmd->save()) {
 
-               /*  foreach ($jsonData['item'] as $key => $i) {
-                    $url = 'http://api.catalogue.local:10080/sandwichs/'.$i['id'];
+                $client = new Client([
+
+                    // Base URL : pour ensuite transmettre des requêtes relatives
+                    'base_uri' =>   $this->container->settings['catalogue'],
+                    // options par défaut pour les requêtes
+                    'timeout' => 2.0,
+                   ]);
+    
+                   $montant = 0;
+
+                   $items = [];
+
+                 foreach ($jsonData['item'] as $key => $i) {
                     
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                        'Content-Type: application/json'
-                     ));
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $result = curl_exec($ch);
-                    curl_close($ch);
-               
-                    $sand = json_decode($result, true);
+                   $result = $client->get('/sandwichs/' . $i['id']);
+    
+                   $sand = json_decode($result->getBody());
 
                     $item = new Item();
                     $item->uri = '/sandwichs/'.$i['id'];
-                    $item->libelle = $sand['sandwich']['nom'];
+                    $item->libelle = $sand->sandwich->nom;
                     $item->quantite = $i['qte'];
-                    $item->tarif = $sand['sandwich']['prix'];
+                    $item->tarif = $sand->sandwich->prix;
                     $item->command_id = $cmd->id;
 
                     $item->save();
-                } */
 
-                $data = ['type' => 'resource',
-                'meta' => ['date' =>date('d-m-Y')],
-                'commande' => $cmd->toArray()
+                    $montant += ($item->quantite * $item->tarif);
+
+                    $items[] = [
+                            'uri' => '/sandwichs/'.$i['id'],
+                            'qte' => $i['qte']
+                    ];
+                } 
+
+                $cmd->montant = $montant;
+                $cmd->save();
+
+                $data = [
+                    'type' => 'resource',
+                    'meta' => ['date' =>date('d-m-Y')],
+                    'commande' => $cmd->toArray(),
+                    'items' => $items
                 ];
 
                 return $this->jsonOutup($resp, 201, $data);
@@ -82,22 +98,42 @@ class CommandeController extends Controller {
         }
     }
 
-   
 
-/*
     //---------get commande by id and commande items---------
     public function getCommande($req, $resp, $args){
 
         try{
 
-            $cmd = Commande::where('id','=',$args['id'])->firstOrFail();
-            $items = $cmd->items()->get();
+            $token = $req->getQueryParam('token', null);
+            
+            if ($token == null) 
+                $token = $req->getHeader('X-lbs-token');
+
+            $cmd = Commande::select('id', 'livraison', 'nom', 'mail', 'status', 'montant')
+                            ->where('id','=',$args['id'])
+                            ->where('token','=', $token)->firstOrFail();
+
+            $items = $cmd->items()->select('uri','libelle','tarif','quantite')->get();
             
          
-                $data = ['type' => 'resource',
-                'meta' => ['date' =>date('d-m-Y')],
-                'commande' => $cmd->toArray(),
-                'item' => $items->toArray()
+            $myCmd = [
+                'id' => $cmd->toArray()['id'], 
+                'livraison' => $cmd->toArray()['livraison'],
+                'nom'=> $cmd->toArray()['nom'],
+                'mail'=> $cmd->toArray()['mail'],
+                'status'=> $cmd->toArray()['status'],
+                'montant' => $cmd->toArray()['montant'],
+                'items' => $items->toArray()
+            ];
+
+                $data = [
+                    'type' => 'resource',
+                    'date' =>date('d-m-Y'),
+                    "links"=> [
+                        "self"  => "/commandes/".$args['id']."/",
+                        "items" => "/commandes/".$args['id']."/items/"
+                    ],
+                    'commande' => $myCmd
             ];
             
 
@@ -119,6 +155,7 @@ class CommandeController extends Controller {
 
     }
 
+/*
     //---------updateStatus-----------
     public function updateStatus($req, $resp, $args){
 

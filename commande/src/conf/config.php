@@ -15,7 +15,8 @@ $config = [
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '' 
-        ]
+        ],
+        'catalogue' => 'http://api.catalogue.local'
         ],
 
         'notFoundHandler' => function($c) {
