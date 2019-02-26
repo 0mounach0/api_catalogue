@@ -37,7 +37,7 @@ class Token extends Controller {
             $data = [
                 'type' => 'error',
                 'error' => 404,
-                'message' => 'ressource non disponible : /Commande/ '. $args['id']
+                'message' => 'ressource non disponible : /Commande/ '
             ];
 
             return $this->jsonOutup($rs, 404, $data);
