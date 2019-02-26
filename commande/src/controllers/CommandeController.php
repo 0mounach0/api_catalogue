@@ -19,7 +19,7 @@ class CommandeController extends Controller {
             if (!isset($jsonData['nom'])) return $response->withStatus(400);
             if (!isset($jsonData['mail'])) return $response->withStatus(400);
             if (!isset($jsonData['livraison'])) return $response->withStatus(400);
-            //if (!isset($jsonData['item'])) return $response->withStatus(400);
+            if (!isset($jsonData['item'])) return $response->withStatus(400);
 
             $cmd = new Commande();
             $cmd->id = Uuid::uuid4();
@@ -104,14 +104,8 @@ class CommandeController extends Controller {
 
         try{
 
-            $token = $req->getQueryParam('token', null);
-            
-            if ($token == null) 
-                $token = $req->getHeader('X-lbs-token');
-
             $cmd = Commande::select('id', 'livraison', 'nom', 'mail', 'status', 'montant')
-                            ->where('id','=',$args['id'])
-                            ->where('token','=', $token)->firstOrFail();
+                            ->firstOrFail($args['id']);
 
             $items = $cmd->items()->select('uri','libelle','tarif','quantite')->get();
             

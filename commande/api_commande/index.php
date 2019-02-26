@@ -20,17 +20,13 @@ $app->post('/commandes[/]',
 
 );
 
-$app->get('/test[/]',
-
-    \lbs\controllers\CommandeController::class . ':test'
-
-);
-
 //---
 $app->get('/commandes/{id}[/]',
 
     \lbs\controllers\CommandeController::class . ':getCommande'
 
+)->add(
+    \lbs\middlewares\Token::class . ':check'
 );
 
 /* 
@@ -42,6 +38,29 @@ $app->patch('/commandes/{id}[/]',
 ); */
 
 
+//------------------User-----------------
+//----
+$app->post('/register[/]',
+
+    \lbs\controllers\UserController::class . ':createUser'
+
+);
+
+//----
+$app->post('/login[/]',
+
+    \lbs\controllers\UserController::class . ':loginUser'
+
+);
+
+//----
+$app->get('/users/{id}[/]',
+
+    \lbs\controllers\UserController::class . ':getUser'
+
+)->add(
+    \lbs\middlewares\Token::class . ':checkJwt'
+);
 
 
 
