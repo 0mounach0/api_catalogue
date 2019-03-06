@@ -16,7 +16,16 @@ $config = [
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '' 
         ],
-        'catalogue' => 'http://api.catalogue.local'
+        'catalogue' => 'http://api.catalogue.local',
+        'secret' => 'mounach',
+        'determineRouteBeforeAppMiddleware' => true,
+        'cors' => [
+            "methods" => ["GET", "POST", "PUT", "PATCH", "OPTION", "DELETE"],
+            "headers.allow" => ["Content-Type", "Authorization", "X-command-token"],
+            "headers.expose" => [],
+            "max.age" => 60*60,
+            "credentials" => true
+        ]
         ],
 
         'notFoundHandler' => function($c) {

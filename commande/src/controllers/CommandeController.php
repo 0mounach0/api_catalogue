@@ -3,8 +3,13 @@ namespace lbs\controllers;
 
 use lbs\models\Commande;
 use lbs\models\Item;
+use lbs\models\User;
 use Ramsey\Uuid\Uuid;
 use GuzzleHttp\Client;
+use Firebase\JWT\JWT;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\SignatureInvalidException ;
+use Firebase\JWT\BeforeValidException;
 
 class CommandeController extends Controller {
 
@@ -14,21 +19,73 @@ class CommandeController extends Controller {
 
         try{
 
+            //------
+
             $jsonData = $req->getParsedBody();
 
-            if (!isset($jsonData['nom'])) return $response->withStatus(400);
             if (!isset($jsonData['mail'])) return $response->withStatus(400);
             if (!isset($jsonData['livraison'])) return $response->withStatus(400);
-            if (!isset($jsonData['item'])) return $response->withStatus(400);
+            if (!isset($jsonData['item'])) return $response->withStatus(400); 
 
             $cmd = new Commande();
             $cmd->id = Uuid::uuid4();
-            $cmd->nom = filter_var($jsonData['nom'], FILTER_SANITIZE_SPECIAL_CHARS);
             $cmd->mail = filter_var($jsonData['mail'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $cmd->livraison = filter_var($jsonData['livraison'], FILTER_SANITIZE_SPECIAL_CHARS);
             $cmd->created_at = date("Y-m-d H:i:s");
             $cmd->updated_at = date("Y-m-d H:i:s");
-            $cmd->livraison = filter_var($jsonData['livraison'], FILTER_SANITIZE_SPECIAL_CHARS);
             $cmd->token = bin2hex(openssl_random_pseudo_bytes(32));
+
+            //--------
+
+            $secret = "mounach";
+            if($req->getHeader('Authorization') != null){
+                
+                $h = $req->getHeader('Authorization')[0] ;
+                $tokenstring = sscanf($h, "Bearer %s")[0] ;
+                $token = JWT::decode($tokenstring, $secret, ['HS512'] );
+            
+            
+            if(empty($token)){
+                $data = ['type' => 'resource',
+                'meta' => ['date' =>date('d-m-Y')],
+                'message' => 'jwt token user absent'
+                ];
+
+                return $this->jsonOutup($rs, 403, $data);
+            }else{
+
+                if (!isset($jsonData['mail'])) return $response->withStatus(400);
+                $mail = filter_var($jsonData['mail'], FILTER_SANITIZE_SPECIAL_CHARS);
+
+                if( $token->umail == $mail ){
+
+                    $user = User::select()->where('email','=',$mail)->firstOrFail();
+                    $cmd->nom = $user->fullname;
+                    $cmd->client_id = $user->id;
+
+                }else {
+
+                    $data = [
+                        'type' => 'error',
+                        'error' => 404,
+                        'message' => 'user jwt token invalide pour la carte demandée'
+                    ];
+
+                    return $this->jsonOutup($rs, 404, $data);
+                }
+
+            }
+                }else{
+                    if (!isset($jsonData['nom'])) return $response->withStatus(400);
+                    if (!isset($jsonData['mail'])) return $response->withStatus(400);
+                    if (!isset($jsonData['livraison'])) return $response->withStatus(400);
+                    if (!isset($jsonData['item'])) return $response->withStatus(400);
+
+                    $cmd->nom = filter_var($jsonData['nom'], FILTER_SANITIZE_SPECIAL_CHARS);
+                    
+                }
+
+            
             
 
             // Create commande
@@ -105,7 +162,8 @@ class CommandeController extends Controller {
         try{
 
             $cmd = Commande::select('id', 'livraison', 'nom', 'mail', 'status', 'montant')
-                            ->firstOrFail($args['id']);
+                        ->where('id','=',$args['id'])    
+                        ->firstOrFail();
 
             $items = $cmd->items()->select('uri','libelle','tarif','quantite')->get();
             
@@ -149,9 +207,9 @@ class CommandeController extends Controller {
 
     }
 
-/*
-    //---------updateStatus-----------
-    public function updateStatus($req, $resp, $args){
+
+    //---------updateDateLivraison-----------
+    public function updateDateLivraison($req, $resp, $args){
 
         try{
 
@@ -159,9 +217,11 @@ class CommandeController extends Controller {
 
             $cmd = Commande::where('id','=',$args['id'])->firstOrFail();
 
-            $cmd->status = filter_var($jsonData['status'], FILTER_VALIDATE_INT);
+            if (!isset($jsonData['livraison'])) return $response->withStatus(400);
 
-            // update status
+            $cmd->livraison = filter_var($jsonData['livraison'], FILTER_SANITIZE_SPECIAL_CHARS);
+
+            // update date livraison
             if($cmd->save()) {
 
                 $data = ['type' => 'resource',
@@ -175,7 +235,7 @@ class CommandeController extends Controller {
 
                 $data = ['type' => 'resource',
                 'meta' => ['date' =>date('d-m-Y')],
-                'message' => 'status Not updated'
+                'message' => 'date livraison Not updated'
                 ];
 
                 return $this->jsonOutup($resp, 400, $data);
@@ -190,7 +250,72 @@ class CommandeController extends Controller {
 
     } 
 
-*/
+    //---------get facture---------
+    public function getFacture($req, $resp, $args){
+
+        try{
+            
+
+            $cmd = Commande::select('id', 'livraison', 'nom', 'mail', 'status', 'montant')
+                            ->where('id','=',$args['id'])->firstOrFail();
+
+            if($cmd->status < 2){
+
+                $data = ['type' => 'error',
+                'meta' => ['date' =>date('d-m-Y')],
+                'message' => "la commande n'est pas encore payé"
+                ];
+
+                return $this->jsonOutup($resp, 400, $data);
+
+            }else{
+
+                $items = $cmd->items()->select('uri','libelle','tarif','quantite')->get();
+         
+                $myCmd = [
+                    'id' => $cmd->toArray()['id'], 
+                    'livraison' => $cmd->toArray()['livraison'],
+                    'nom'=> $cmd->toArray()['nom'],
+                    'mail'=> $cmd->toArray()['mail'],
+                    'status'=> $cmd->toArray()['status'],
+                    'montant' => $cmd->toArray()['montant'],
+                    'items' => $items->toArray()
+                ];
+
+                    $data = [
+                        'type' => 'resource',
+                        'date' =>date('d-m-Y'),
+                        "links"=> [
+                            "self"  => "/commandes/".$args['id']."/facture",
+                            "items" => "/commandes/".$args['id']."/items/"
+                        ],
+                        'commande' => $myCmd
+                ];
+                
+                return $this->jsonOutup($resp, 200, $data);
+
+            }
+                
+            
+
+
+        }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+
+            $data = [
+                'type' => 'error',
+                'error' => 404,
+                'message' => 'ressource non disponible : /Commande/ '. $args['id']
+            ];
+
+            return $this->jsonOutup($resp, 404, $data);
+
+
+        }
+
+    }
+    
+
+
 
 
 

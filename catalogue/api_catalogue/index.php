@@ -4,13 +4,12 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require '../src/vendor/autoload.php';
 
+
 $container = new \Slim\Container(require_once __DIR__ . "/../src/conf/config.php"); 
 
 $app = new \Slim\App($container);
 
 \lbs\bootstrap\LbsBootstrap::startEloquent($container->settings['config']);
-
-
 
 //------------------catgorie-----------------
 //----
@@ -67,6 +66,16 @@ $app->get('/sandwichs/{id}[/]',
 $app->get('/categories/{id}/sandwichs[/]',
 
   \lbs\controllers\SandwichController::class . ':getCategorieSandwichs'
+
+);
+
+
+//-------------------------------
+
+//---
+$app->get('/home[/]', 
+
+  \lbs\controllers\SandwichController::class . ':showAllSandwichs'
 
 );
 

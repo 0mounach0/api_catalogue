@@ -145,6 +145,39 @@ class SandwichController extends Controller {
     }
 
 
+
+    //------twig----------
+
+    //---------get sandwichs---------
+    public function showAllSandwichs($req, $resp, $args){
+         try{
+            $sandwichs = null;
+
+            $cat_id = $req->getQueryParam('cat', null);
+            
+            if(is_null($cat_id))
+                $sandwichs = Sandwich::Select()->get();
+            else{
+                $cat = Categorie::select('id','nom')->where('id','=',$cat_id)->firstOrFail();
+                $sandwichs = $cat->sandwichs()->select()->get();
+            }
+            
+                $categories = Categorie::Select()->get();
+
+            return $this->container->view->render($resp, 'home.twig',[
+                'sandwichs' => $sandwichs->toArray(), 
+                'categories' => $categories->toArray() 
+                ]);
+
+        }catch(\Exception $e){
+
+
+
+        } 
+
+    }
+
+
 }
 
 
