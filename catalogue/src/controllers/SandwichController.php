@@ -151,6 +151,7 @@ class SandwichController extends Controller {
     //---------get sandwichs---------
     public function showAllSandwichs($req, $resp, $args){
          try{
+             if($this->container->auth->check()){
             $sandwichs = null;
 
             $cat_id = $req->getQueryParam('cat', null);
@@ -169,6 +170,10 @@ class SandwichController extends Controller {
                 'categories' => $categories->toArray() 
                 ]);
 
+            }else{
+                return $resp->withRedirect($this->container->router->pathFor('login'));
+            }
+
         }catch(\Exception $e){
 
 
@@ -176,6 +181,131 @@ class SandwichController extends Controller {
         } 
 
     }
+
+
+
+    //---------form sandwichs---------
+    public function createSandwichForm($req, $resp, $args){
+        try{
+            if($this->container->auth->check()){
+               $categories = Categorie::Select()->get();
+
+           return $this->container->view->render($resp, 'createSandwichForm.twig',[
+               'categories' => $categories->toArray() 
+               ]);
+
+            }else{
+                return $resp->withRedirect($this->container->router->pathFor('login'));
+            }
+
+       }catch(\Exception $e){
+
+
+       } 
+
+   }
+
+   //---------edit form sandwichs---------
+   public function editSandwichForm($req, $resp, $args){
+    try{
+        if($this->container->auth->check()){
+        $sandwich = Sandwich::find($args['id']);
+
+       return $this->container->view->render($resp, 'editSandwichForm.twig',[
+           'sandwich' => $sandwich->toArray() 
+           ]);
+        }else{
+            return $resp->withRedirect($this->container->router->pathFor('login'));
+        }
+   }catch(\Exception $e){
+
+
+   } 
+
+}
+
+
+
+    //---------create sandwich---------
+    public function createSandwich($req, $resp, $args){
+        try{
+            if($req->getParam('categorie')){
+                $sandwich = new Sandwich();
+                $sandwich->nom = filter_var($req->getParam('nom'), FILTER_SANITIZE_STRING);
+                $sandwich->description = filter_var($req->getParam('description'), FILTER_SANITIZE_STRING);
+                $sandwich->prix = (float) filter_var($req->getParam('prix'), FILTER_SANITIZE_STRING);
+                $sandwich->type_pain = filter_var($req->getParam('type'), FILTER_SANITIZE_STRING);
+
+            // Create sandwich
+            if($sandwich->save()) {
+
+                $sandwich->categories()->sync($req->getParam('categorie'));
+
+                $this->showAllSandwichs($req, $resp, $args);
+            }
+            
+            }else{
+                echo "<script>alert('error');</script>";
+                $this->createSandwichForm($req, $resp, $args);
+            } 
+                            
+       }catch(\Exception $e){
+
+
+
+       } 
+
+   }
+
+   //---------create sandwich---------
+   public function editSandwich($req, $resp, $args){
+    try{
+        
+            $sandwich = Sandwich::find($args['id']);
+            $sandwich->nom = filter_var($req->getParam('nom'), FILTER_SANITIZE_STRING);
+            $sandwich->description = filter_var($req->getParam('description'), FILTER_SANITIZE_STRING);
+            $sandwich->prix = (float) filter_var($req->getParam('prix'), FILTER_SANITIZE_STRING);
+            $sandwich->type_pain = filter_var($req->getParam('type'), FILTER_SANITIZE_STRING);
+
+        // edit sandwich
+        if($sandwich->save()) {
+
+            $this->showAllSandwichs($req, $resp, $args);
+
+        }
+        
+                        
+   }catch(\Exception $e){
+
+
+
+   } 
+
+}
+
+   
+
+   //-----deleteSandwich------
+   public function deleteSandwich($req, $resp, $args){
+    try{
+        if($this->container->auth->check()){
+        $sandwich = Sandwich::find($args['id']);
+
+        $sandwich->categories()->detach();
+
+        $sandwich->delete();
+
+        $this->showAllSandwichs($req, $resp, $args);
+    }else{
+        return $resp->withRedirect($this->container->router->pathFor('login'));
+    }
+   }catch(\Exception $e){
+
+
+   } 
+
+}
+
 
 
 }

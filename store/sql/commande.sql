@@ -1,9 +1,27 @@
--- Adminer 4.3.1 MySQL dump
+-- Adminer 4.7.0 MySQL dump
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+
+DROP TABLE IF EXISTS `commande`;
+CREATE TABLE `commande` (
+  `id` varchar(128) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `livraison` datetime NOT NULL,
+  `nom` varchar(128) NOT NULL,
+  `mail` varchar(256) NOT NULL,
+  `montant` decimal(8,2) DEFAULT NULL,
+  `remise` decimal(8,2) DEFAULT NULL,
+  `token` varchar(128) DEFAULT NULL,
+  `client_id` int(11) DEFAULT NULL,
+  `ref_paiement` varchar(128) DEFAULT NULL,
+  `date_paiement` datetime DEFAULT NULL,
+  `mode_paiement` int(11) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `commande` (`id`, `created_at`, `updated_at`, `livraison`, `nom`, `mail`, `montant`, `remise`, `token`, `client_id`, `ref_paiement`, `date_paiement`, `mode_paiement`, `status`) VALUES
 ('e084872b-6328-46af-97fc-6cb909bf4f72',	'2018-10-21 17:37:00',	'2018-10-21 17:37:00',	'2018-10-22 07:54:03',	'Carpentier',	'Carpentier@gmail.com',	NULL,	NULL,	'f14afb8e79bfba20403362bfe65d69c9db1c9fff3c1724006740c3cadaa8c56f',	NULL,	'1a25f5d94cad9e80ced68cb5515ab16c4be4bdb82ea3974a02904d3f0ea44c8bd21ad841916b91dded805bdebf36fffa',	NULL,	NULL,	2),
@@ -1507,7 +1525,32 @@ INSERT INTO `commande` (`id`, `created_at`, `updated_at`, `livraison`, `nom`, `m
 ('92905d4f-1b23-4236-a73d-b089e995a1db',	'2018-10-21 17:40:04',	'2018-10-21 17:40:04',	'2018-10-22 03:14:12',	'Picard',	'Picard@dbmail.com',	NULL,	NULL,	'f15f52c76b0accbd273933e270df852fe6d92d0e8d402991c848bf91e13156dd',	NULL,	NULL,	NULL,	NULL,	1),
 ('dd8c71dc-836d-4add-8012-766ae0a8ceec',	'2018-10-21 17:40:04',	'2018-10-21 17:40:04',	'2018-10-22 09:04:27',	'Fontaine',	'Fontaine@hotmail.fr',	NULL,	NULL,	'e6b1fb5598f7f99b07bfc7387bed85ca1bde82ad491cdaa2d7383e9fd5b49916',	NULL,	NULL,	NULL,	NULL,	1),
 ('4781fff4-19f2-4549-89de-cbe236592c04',	'2018-10-21 17:40:04',	'2018-10-21 17:40:04',	'2018-10-24 06:40:12',	'Mary',	'Mary@yahoo.fr',	NULL,	NULL,	'd87778b3c9884f575b8ee83750da11cdb7414bf8137fae399acef7622ab9eaf6',	NULL,	NULL,	NULL,	NULL,	1),
-('07e6ae1d-f20b-4163-b4f9-1ccedb006bfa',	'2018-10-26 09:50:15',	'2018-10-26 09:50:17',	'2018-10-25 19:00:00',	'paul',	'paul@gmail.com',	35.00,	NULL,	'9916f2836cd2ec9f0d33e80fdbedaa71e71bdc5fb4772c570ff6f052a6091234',	3,	NULL,	NULL,	NULL,	1);
+('07e6ae1d-f20b-4163-b4f9-1ccedb006bfa',	'2018-10-26 09:50:15',	'2018-10-26 09:50:17',	'2018-10-25 19:00:00',	'paul',	'paul@gmail.com',	35.00,	NULL,	'9916f2836cd2ec9f0d33e80fdbedaa71e71bdc5fb4772c570ff6f052a6091234',	3,	NULL,	NULL,	NULL,	1),
+('6a05f1c5-2da6-4ee0-a20e-0d42d9abc613',	'2019-01-29 16:43:10',	'2019-01-29 16:43:10',	'2019-01-28 14:54:44',	'mounach',	'mounach@gmail.com',	39.25,	NULL,	'e8516b25e6737df926a6286322927289dade0767241f12ba1e5561e6933cf68d',	NULL,	NULL,	NULL,	NULL,	1),
+('9d759135-98b6-4219-a1c9-742a04c20376',	'2019-01-29 16:50:19',	'2019-01-29 16:50:19',	'2019-01-28 14:54:44',	'mouad',	'mouad@gmail.com',	16.50,	NULL,	'cf38150d0fc2eb32d681048c56573362a79615aba456eaad77cd04ab35fd74d8',	NULL,	NULL,	NULL,	NULL,	1),
+('0bed3633-abed-4eb7-801d-0dddfa5f7c15',	'2019-01-29 16:51:51',	'2019-01-29 16:51:51',	'2019-01-28 14:54:44',	'ayoub',	'ayoub@gmail.com',	19.75,	NULL,	'4d580aaeb50fb7817765952d7d1fc6abddb7978181c5feab9be70fabae93e6ca',	NULL,	NULL,	NULL,	NULL,	1),
+('fb9028df-ce2f-4720-9e8e-074971c25260',	'2019-03-05 14:19:52',	'2019-03-05 14:19:52',	'2019-03-11 14:54:44',	'oktay',	'oktay@gmail.com',	NULL,	NULL,	'36c400f39cda3c7ec2a256af7e1700101521acec58d24aa2b51eac43e03ac271',	NULL,	'68ed63834f0a90bf2b35bd5a18c83f042109b3f3d9fb6a06ec2c125b9828101e224edca8d3aac257dc86372c02d2bafd',	'2019-03-05 15:26:52',	1,	2),
+('f05a256d-364a-4e1a-a043-9142630db731',	'2019-03-05 14:21:34',	'2019-03-05 14:21:34',	'2019-03-05 14:54:44',	'mouad2',	'mouad2@gmail.com',	19.75,	NULL,	'ecef934d5e8a6e3696af063e670d4a0b9a8cc172bf2f674aa9c014f9fca532d7',	NULL,	NULL,	NULL,	NULL,	1),
+('be2b2e0c-b5ee-479c-b3ab-cffa460ceab7',	'2019-03-05 14:21:57',	'2019-03-05 14:21:57',	'2019-03-05 14:54:44',	'salah',	'salah@gmail.com',	19.75,	NULL,	'07ad77a391373a54fc66e01ad1c45f1002019325ee055726a430633e3915fd82',	NULL,	NULL,	NULL,	NULL,	1),
+('ac05800a-bb01-47e4-8d64-88f9982d0991',	'2019-03-05 14:37:52',	'2019-03-05 14:37:52',	'2019-03-05 14:54:44',	'mouad3',	'mouad3@gmail.com',	19.75,	NULL,	'9c953a80355815be789e4af43c5e8b34462a4f7cc1e6ddde19865c8e50d23ce1',	NULL,	NULL,	NULL,	NULL,	1),
+('039d9fa2-6205-42c8-ba84-b4f51029a04a',	'2019-03-05 14:42:39',	'2019-03-05 14:42:39',	'2019-03-05 14:54:44',	'mouad mounach',	'mouad@gmail.com',	19.75,	NULL,	'a014fe0d7cd7f1f420312532dcfd386833b281bdac56ecdeea3d04b517f1aaa1',	NULL,	NULL,	NULL,	NULL,	2),
+('635693f5-bb3a-4035-a1c6-79889b200c42',	'2019-03-05 14:56:50',	'2019-03-05 14:56:50',	'2019-03-11 14:54:44',	'oktay aydin',	'oktay@gmail.com',	19.75,	NULL,	'eb61b1f7c715f3528b998f572fc0eb4c2e09d07dfd7a7155efdfe426c1ef0112',	NULL,	NULL,	NULL,	NULL,	1),
+('f100c711-67f9-47b5-b0d8-09c8dd7adf7b',	'2019-03-05 16:18:35',	'2019-03-05 16:18:35',	'2019-03-05 14:54:44',	'mouad mounach',	'mouad@gmail.com',	NULL,	NULL,	'90c998a926f137e7daa5cca121ed5bec5481bc8c2b29c63256eee7549b8ed64c',	3,	NULL,	NULL,	NULL,	1),
+('006811f3-0f5a-4faf-bb4f-216ed08a8429',	'2019-03-05 16:19:01',	'2019-03-05 16:19:01',	'2019-03-05 14:54:44',	'mouad mounach',	'mouad@gmail.com',	19.75,	NULL,	'c50912aad1d01004693205b202554f4ee29b2f31e35d38a61b8a4bea8b2304b1',	3,	NULL,	NULL,	NULL,	1),
+('a3af70a3-d50c-4b10-834b-473e925cd52c',	'2019-03-05 16:47:17',	'2019-03-05 16:47:17',	'2019-03-05 14:54:44',	'user1',	'user1@gmail.com',	19.75,	NULL,	'6d2d507733a289f244b283ac55fc7898d04b4ab49a9cfd184d5f7d3f683c1f51',	NULL,	'7dadade607e9094511ae5a43f42d2258082156cb1019e4db7024c209cb8cc4330d1dc4916d21e34f2084ae2c39d283c1',	'2019-03-05 20:10:32',	1,	2),
+('5abb2f57-c3b2-4533-a140-b292b85ed87f',	'2019-03-05 16:52:48',	'2019-03-05 16:52:48',	'2019-03-05 14:54:44',	'mostafa',	'mostafa@gmail.com',	19.75,	0.99,	'429415a5fff1017a8eb1e128d1f18abca3eb9e1d5f8f6c0daf875f9df84ed2cd',	6,	'eea73fcc7140a89ebaf1db7e50d2d4736c5e5830f11aa5afa0c9c743bbc84ae30b8c596a3c947140776331602af4e606',	'2019-03-05 20:10:08',	1,	2),
+('076ef290-10b5-45eb-8720-d57d504b5b11',	'2019-03-09 20:39:35',	'2019-03-09 20:39:35',	'2019-03-12 14:54:44',	'user2',	'user2@gmail.com',	19.75,	NULL,	'62950df3a762966c5506d35ab2409da103a31b65142b04cd92a026a5435de8b2',	NULL,	'79a20d4064dfad978212a703c066d8b936237ba02fb8539794029454cdbec5e4ac2fab2fac2b3547ccf2e2b6b4dffee3',	'2019-03-09 20:41:36',	1,	2);
+
+DROP TABLE IF EXISTS `item`;
+CREATE TABLE `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uri` varchar(128) NOT NULL,
+  `libelle` varchar(128) DEFAULT NULL,
+  `tarif` decimal(8,2) DEFAULT NULL,
+  `quantite` int(11) DEFAULT 1,
+  `command_id` varchar(128) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `item` (`id`, `uri`, `libelle`, `tarif`, `quantite`, `command_id`) VALUES
 (1,	'/sandwichs/5',	'jambon-beurre',	5.25,	2,	'e084872b-6328-46af-97fc-6cb909bf4f72'),
@@ -4528,6 +4571,50 @@ INSERT INTO `item` (`id`, `uri`, `libelle`, `tarif`, `quantite`, `command_id`) V
 (3016,	'/sandwichs/6',	'fajitas poulet',	6.50,	1,	'2e90cbf1-127a-4d9d-9eab-909c0074f66b'),
 (3017,	'/sandwichs/5',	'jambon-beurre',	5.25,	2,	'07e6ae1d-f20b-4163-b4f9-1ccedb006bfa'),
 (3018,	'/sandwichs/4',	'le bucheron',	6.00,	3,	'07e6ae1d-f20b-4163-b4f9-1ccedb006bfa'),
-(3019,	'/sandwichs/6',	'fajitas poulet',	6.50,	1,	'07e6ae1d-f20b-4163-b4f9-1ccedb006bfa');
+(3019,	'/sandwichs/6',	'fajitas poulet',	6.50,	1,	'07e6ae1d-f20b-4163-b4f9-1ccedb006bfa'),
+(3053,	'/sandwichs/4',	'le bucheron',	6.00,	1,	'6a05f1c5-2da6-4ee0-a20e-0d42d9abc613'),
+(3054,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'6a05f1c5-2da6-4ee0-a20e-0d42d9abc613'),
+(3055,	'/sandwichs/7',	'le forestier',	6.75,	3,	'6a05f1c5-2da6-4ee0-a20e-0d42d9abc613'),
+(3056,	'/sandwichs/5',	'jambon-beurre',	5.25,	2,	'9d759135-98b6-4219-a1c9-742a04c20376'),
+(3057,	'/sandwichs/4',	'le bucheron',	6.00,	1,	'9d759135-98b6-4219-a1c9-742a04c20376'),
+(3058,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'0bed3633-abed-4eb7-801d-0dddfa5f7c15'),
+(3059,	'/sandwichs/7',	'le forestier',	6.75,	1,	'0bed3633-abed-4eb7-801d-0dddfa5f7c15'),
+(3060,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'f05a256d-364a-4e1a-a043-9142630db731'),
+(3061,	'/sandwichs/7',	'le forestier',	6.75,	1,	'f05a256d-364a-4e1a-a043-9142630db731'),
+(3062,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'be2b2e0c-b5ee-479c-b3ab-cffa460ceab7'),
+(3063,	'/sandwichs/7',	'le forestier',	6.75,	1,	'be2b2e0c-b5ee-479c-b3ab-cffa460ceab7'),
+(3064,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'ac05800a-bb01-47e4-8d64-88f9982d0991'),
+(3065,	'/sandwichs/7',	'le forestier',	6.75,	1,	'ac05800a-bb01-47e4-8d64-88f9982d0991'),
+(3066,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'039d9fa2-6205-42c8-ba84-b4f51029a04a'),
+(3067,	'/sandwichs/7',	'le forestier',	6.75,	1,	'039d9fa2-6205-42c8-ba84-b4f51029a04a'),
+(3068,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'635693f5-bb3a-4035-a1c6-79889b200c42'),
+(3069,	'/sandwichs/7',	'le forestier',	6.75,	1,	'635693f5-bb3a-4035-a1c6-79889b200c42'),
+(3070,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'006811f3-0f5a-4faf-bb4f-216ed08a8429'),
+(3071,	'/sandwichs/7',	'le forestier',	6.75,	1,	'006811f3-0f5a-4faf-bb4f-216ed08a8429'),
+(3072,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'a3af70a3-d50c-4b10-834b-473e925cd52c'),
+(3073,	'/sandwichs/7',	'le forestier',	6.75,	1,	'a3af70a3-d50c-4b10-834b-473e925cd52c'),
+(3074,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'5abb2f57-c3b2-4533-a140-b292b85ed87f'),
+(3075,	'/sandwichs/7',	'le forestier',	6.75,	1,	'5abb2f57-c3b2-4533-a140-b292b85ed87f'),
+(3076,	'/sandwichs/6',	'fajitas poulet',	6.50,	2,	'076ef290-10b5-45eb-8720-d57d504b5b11'),
+(3077,	'/sandwichs/7',	'le forestier',	6.75,	1,	'076ef290-10b5-45eb-8720-d57d504b5b11');
 
--- 2018-10-29 10:12:03
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fullname` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `birth_day` date DEFAULT NULL,
+  `carte` varchar(255) NOT NULL,
+  `date_expiration` varchar(255) NOT NULL,
+  `cumul` float NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `user` (`id`, `fullname`, `email`, `password`, `birth_day`, `carte`, `date_expiration`, `cumul`) VALUES
+(3,	'mouad mounach',	'mouad@gmail.com',	'$2y$10$SpqwjYI5ADXRnjaakNo2Z.KgTsKqhdnqomWAmmi7PV3jzoHNZfE7K',	'1996-09-25',	'341654654654',	'09/21',	0),
+(4,	'ayoub madani',	'ayoub@gmail.com',	'$2y$10$csgNPcp/LAWW/7Ei2S0l6O0kCKvqJ0YM9WIcRz0MwnSe.hPnoutGC',	'1996-03-27',	'341654654654',	'09/21',	0),
+(5,	'oktay aydin',	'oktay@gmail.com',	'$2y$10$aRyIXA6gq1f8qExQE.4TZOPmhbdR6le13W0zupdiBND8w36SNX2Lm',	'1996-03-27',	'341654654654',	'09/21',	0),
+(6,	'mostafa',	'mostafa@gmail.com',	'$2y$10$PxgrrCBw7V5VkYOAsOFy6O7WjdGSqE4sgPuCCaRuBPjKrGcLyNMIS',	'1996-03-27',	'654654654654564',	'09/21',	0);
+
+-- 2019-03-09 21:50:29

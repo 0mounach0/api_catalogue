@@ -57,8 +57,7 @@ class UserController extends Controller {
     }
 
 
-    //---------
-    
+    //--------- login user -----
     public function loginUser($req, $resp, $args){
 
         try{
@@ -124,7 +123,7 @@ class UserController extends Controller {
 
     }
 
-    //------------
+    //------------ get user infos ---------
 
     public function getUser($req, $resp, $args){
 
@@ -273,7 +272,7 @@ class UserController extends Controller {
 
     }
 
-    //------------
+    //------------ get user commands history -----------
 
     public function getUserCommandes($req, $resp, $args){
 

@@ -15,6 +15,14 @@ $config = [
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '' 
+        ],
+        'determineRouteBeforeAppMiddleware' => true,
+        'cors' => [
+            "methods" => ["GET", "POST", "PUT", "PATCH", "OPTION", "DELETE"],
+            "headers.allow" => ["Content-Type", "Authorization", "X-command-token"],
+            "headers.expose" => [],
+            "max.age" => 60*60,
+            "credentials" => true
         ]
         ],
 

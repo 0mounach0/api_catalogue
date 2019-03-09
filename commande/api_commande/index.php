@@ -10,6 +10,8 @@ $app = new \Slim\App($container);
 
 \lbs\bootstrap\LbsBootstrap::startEloquent($container->settings['config']);
 
+
+//------- cors -------
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
@@ -18,7 +20,7 @@ $app->add(\lbs\middlewares\Cors::class . ':checkAndAddCorsHeaders');
 
 
 //------------------Commande-----------------
-//----
+//---- create commande ------
 $app->post('/commandes[/]',
 
     \lbs\controllers\CommandeController::class . ':createCommande'
@@ -27,7 +29,7 @@ $app->post('/commandes[/]',
     \lbs\middlewares\Token::class . ':checkJwtCreationCommande'
 );;
 
-//---
+//--- get command by id ----
 $app->get('/commandes/{id}[/]',
 
     \lbs\controllers\CommandeController::class . ':getCommande'
@@ -37,7 +39,7 @@ $app->get('/commandes/{id}[/]',
 );
 
 
-//----
+//---- update date livraison ----
 $app->patch('/commandes/{id}[/]',
 
     \lbs\controllers\CommandeController::class . ':updateDateLivraison'
@@ -45,7 +47,7 @@ $app->patch('/commandes/{id}[/]',
 ); 
 
 
-//---
+//--- get facture ----
 $app->get('/commandes/{id}/facture[/]',
 
     \lbs\controllers\CommandeController::class . ':getFacture'
@@ -54,21 +56,21 @@ $app->get('/commandes/{id}/facture[/]',
 
 
 //------------------User-----------------
-//----
+//---- create a client account ----
 $app->post('/register[/]',
 
     \lbs\controllers\UserController::class . ':createUser'
 
 );
 
-//----
+//---- login client account ---
 $app->post('/login[/]',
 
     \lbs\controllers\UserController::class . ':loginUser'
 
 );
 
-//----
+//---- get client infos ----
 $app->get('/users/{id}[/]',
 
     \lbs\controllers\UserController::class . ':getUser'
@@ -77,7 +79,7 @@ $app->get('/users/{id}[/]',
     \lbs\middlewares\Token::class . ':checkJwt'
 );
 
-//----
+//---- pay command -----
 $app->patch('/commandes/{id}/payement[/]',
 
     \lbs\controllers\UserController::class . ':payerCommande'
@@ -86,7 +88,7 @@ $app->patch('/commandes/{id}/payement[/]',
     \lbs\middlewares\Token::class . ':checkJwtPayement'
 ); 
 
-//----
+//---- get client commands history ------ 
 $app->get('/users/{id}/commandes[/]',
 
     \lbs\controllers\UserController::class . ':getUserCommandes'

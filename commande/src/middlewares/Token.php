@@ -12,8 +12,7 @@ use Firebase\JWT\BeforeValidException;
 
 class Token extends Controller {
 
-    //------------------
-
+    //------------ command token ----------
     public function check ($rq, $rs, $next){
 
         $token = $rq->getQueryParam('token', null);
@@ -68,8 +67,7 @@ class Token extends Controller {
 
     }
 
-    //------------------
-
+    //------------------ check jwt token --------------
     public function checkJwt ($rq, $rs, $next){
         try {
 
@@ -143,8 +141,7 @@ class Token extends Controller {
 
 
 
-    //------------------
-
+    //------------------check jwt token on commande creation -------------
     public function checkJwtCreationCommande ($rq, $rs, $next){
         try {
 
@@ -219,8 +216,7 @@ class Token extends Controller {
     
     }
 
-     //------------------
-
+     //------------------ check jwt token on payement ------------
      public function checkJwtPayement ($rq, $rs, $next){
         try {
 

@@ -5,7 +5,7 @@
     <div class="row">
 
     <div class='col-sm-3'>
-        <div class="list-group">
+        <div class="list-group" style="margin-top: 10px;">
          <a href="/home" class="list-group-item list-group-item-action">ALL CATEGORIES</a>
                 {% for categorie in categories %}
             <a href="/home?cat={{categorie.id}}" class="list-group-item list-group-item-action">{{ categorie.nom }}</a>
@@ -14,15 +14,17 @@
     </div>
 
     <div class='col-sm-9'>
-        <div class="row">
+        <div class="row" style="margin-top: 10px;">
         {% for sandwich in sandwichs %}
             <div class="card col-sm-4" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{ sandwich.nom }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{ sandwich.prix }}</h6>
                     <p class="card-text">{{ sandwich.description }}</p>
-                    <a href="#" class="card-link"><i class="fas fa-pencil-alt"></i></a>
-                    <a href="#" class="card-link"><i class="fas fa-trash-alt"></i></a>
+                    <a href="/editSandwich/{{ sandwich.id }}" class="card-link"><i class="fas fa-pencil-alt"></i></a>
+                    <a href="/deleteSandwich/{{ sandwich.id }}"  class="card-link"
+                    onclick="return(confirm('Etes-vous sûr de vouloir supprimer ce sandwich?'));"
+                    ><i class="fas fa-trash-alt"></i></a>
                 </div>
             </div>
         {% endfor %}

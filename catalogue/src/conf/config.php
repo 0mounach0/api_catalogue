@@ -1,4 +1,5 @@
 <?php  
+session_start();
 
 $init = parse_ini_file("config.ini");
 
@@ -15,6 +16,14 @@ $config = [
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '' 
+        ],
+        'determineRouteBeforeAppMiddleware' => true,
+        'cors' => [
+            "methods" => ["GET", "POST", "PUT", "PATCH", "OPTION", "DELETE"],
+            "headers.allow" => ["Content-Type", "Authorization", "X-command-token"],
+            "headers.expose" => [],
+            "max.age" => 60*60,
+            "credentials" => true
         ]
         ],
 
@@ -49,6 +58,12 @@ $config = [
 
             };
         },
+        'auth' => function ($container) {
+            return new \lbs\auth\Auth;
+        },
+        'csrf' => function ($container) {
+            return new \Slim\Csrf\Guard;
+        },
         'view' => function ($container) {
             
             $view = new \Slim\Views\Twig( __DIR__ . '/../views', [
@@ -59,6 +74,11 @@ $config = [
             $router = $container->get('router');
             $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
             $view->addExtension(new Slim\Views\TwigExtension($router, $uri));
+
+            $view->getEnvironment()->addGlobal('auth', [
+                'check' => $container->auth->check(),  
+                'staff' => $container->auth->staff()
+              ]);
         
             return $view;
         }
