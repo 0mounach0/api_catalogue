@@ -32,7 +32,7 @@ II-\ SERVICE DE SUIVI de COMMANDES POINT DE VENTE :
 
 - http://api.store.local:10082
 
-III-\ SERVICE DE PRISE DE COMMANDES – mode non identifié :
+III-\ SERVICE DE PRISE DE COMMANDES :
 
 - http://api.commande.local:10082
 
