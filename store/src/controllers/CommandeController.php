@@ -3,10 +3,20 @@ namespace lbs\controllers;
 
 use lbs\models\Commande;
 
+/**
+ * Class CommandeController
+ * @package lbs\controllers
+ */
 class CommandeController extends Controller {
 
-//----------------Commande------------------------------------
-    //---------get all Commandes-------
+    /**
+     * Commande
+     * Toutes les commandes
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed|void
+     */
     public function getCommandes($req, $resp, $args){
 
         try{
@@ -78,6 +88,14 @@ class CommandeController extends Controller {
 
 
     //---------get commande by id and commande items---------
+
+    /**
+     * Commande par id et les commandes items
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed|void
+     */
     public function getCommande($req, $resp, $args){
 
         try{
@@ -127,7 +145,14 @@ class CommandeController extends Controller {
 
     }
 
-    //---------get commande items---------
+    /**
+     * Commande items
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed|void
+     *
+     */
     public function getCommandeItems($req, $resp, $args){
 
         try{
@@ -165,7 +190,14 @@ class CommandeController extends Controller {
 
     }
 
-    //---------updateStatus-----------
+    /**
+     * Mise à jour du status
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed|void
+     */
+
     public function updateStatus($req, $resp, $args){
 
         try{
@@ -203,9 +235,7 @@ class CommandeController extends Controller {
 
         }
 
-    } 
-
-
+    }
 
 
 

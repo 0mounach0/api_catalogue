@@ -1,8 +1,18 @@
 <?php
 namespace lbs\errors;
 
+/**
+ * Class NotAllowed
+ * @package lbs\errors
+ */
 class NotAllowed  {
 
+    /**
+     * @param $req
+     * @param $resp
+     * @param $methods
+     * @return mixed
+     */
     static public function error($req, $resp, $methods){
 
         $data = [

@@ -1,8 +1,17 @@
 <?php
 namespace lbs\errors;
 
+/**
+ * Class NotFound
+ * @package lbs\errors
+ */
 class NotFound  {
 
+    /**
+     * @param $req
+     * @param $resp
+     * @return mixed
+     */
     static public function error($req, $resp){
 
         $data = [

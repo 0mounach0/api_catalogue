@@ -4,42 +4,55 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require '../src/vendor/autoload.php';
 
+
 $container = new \Slim\Container(require_once __DIR__ . "/../src/conf/config.php"); 
 
 $app = new \Slim\App($container);
 
 \lbs\bootstrap\LbsBootstrap::startEloquent($container->settings['config']);
 
-//----- cors -------
+/**
+ * cors
+ */
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
   });
   
 $app->add(\lbs\middlewares\Cors::class . ':checkAndAddCorsHeaders');
 
-//------------------Commande-----------------
-//----get all commandes ----
+/**
+ * Commandes
+ * Toutes les commandes
+ */
 $app->get('/commandes[/]',
 
     \lbs\controllers\CommandeController::class . ':getCommandes'
-
 );
 
- //---get command by id-----
+/**
+ * Commande par ID
+ */
+
 $app->get('/commandes/{id}[/]',
 
     \lbs\controllers\CommandeController::class . ':getCommande'
 
 );
 
- //---get command items----
+/**
+ * Les commandes Items
+ */
+
  $app->get('/commandes/{id}/items[/]',
 
     \lbs\controllers\CommandeController::class . ':getCommandeItems'
 
 );
 
-//----update command status----
+/**
+ * Mise à jour du status de la commande
+ */
+
 $app->patch('/commandes/{id}[/]',
 
     \lbs\controllers\CommandeController::class . ':updateStatus'
@@ -47,10 +60,9 @@ $app->patch('/commandes/{id}[/]',
 );
 
 
-
-
-
-//-----------
+/**
+ * Lancement de l'application
+ */
 $app->run();
 
 

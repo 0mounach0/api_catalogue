@@ -1,8 +1,16 @@
 <?php
 namespace lbs\bootstrap;
 
+/**
+ * Class LbsBootstrap
+ * @package lbs\bootstrap
+ */
 class LbsBootstrap {
 
+    /**
+     * Fonction start Eloquent
+     * @param $config
+     */
        public static function startEloquent($config)
        {
 
