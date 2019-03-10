@@ -4,12 +4,18 @@ namespace lbs\controllers;
 use lbs\models\Sandwich;
 use lbs\models\Categorie;
 
+/**
+ * Classe SandwichControler extends la classe Controller
+ */
 class SandwichController extends Controller {
 
-
-//----------------sandwich---------------------------------------------
-
-    //---------get sandwichs---------
+    /**
+     * Sandwich
+     * Les sandwichs
+     * @param $req
+     * @param $resp
+     * @param $args
+     */
     public function getSandwichs($req, $resp, $args){
 
         try{
@@ -72,8 +78,13 @@ class SandwichController extends Controller {
 
     }
 
-
-    //---------get sandwich by id-------------
+    /**
+     * Sandwich par ID
+     * @param $req
+     * @param $resp
+     * @param $args
+     */
+  
     public function getSandwich($req, $resp, $args){
 
         try{
@@ -109,7 +120,13 @@ class SandwichController extends Controller {
 
     }
 
-    //---------get Categorie Sandwichs-------------
+
+    /**
+     * Avoir les catégories sandwich
+     * @param $req
+     * @param $resp
+     * @param $args
+     */
     public function getCategorieSandwichs($req, $resp, $args){
 
         try{
@@ -145,10 +162,14 @@ class SandwichController extends Controller {
     }
 
 
-
-    //------twig----------
-
-    //---------get sandwichs---------
+    /**
+     * Twig
+     * Avoir les sandwichs
+     * @param $req
+     * @param $resp
+     * @param $args
+     * home.twig
+     */
     public function showAllSandwichs($req, $resp, $args){
          try{
              if($this->container->auth->check()){
@@ -184,7 +205,14 @@ class SandwichController extends Controller {
 
 
 
-    //---------form sandwichs---------
+     /**
+     * Form des sandwichs
+     * @param $req
+     * @param $resp
+     * @param $args
+     * createSandwichForm.twig
+     */
+
     public function createSandwichForm($req, $resp, $args){
         try{
             if($this->container->auth->check()){
@@ -205,7 +233,15 @@ class SandwichController extends Controller {
 
    }
 
-   //---------edit form sandwichs---------
+
+    /**
+     * Editer le sandwich form
+     * @param $req
+     * @param $resp
+     * @param $args
+     * editSandwichForm.twig
+     */
+
    public function editSandwichForm($req, $resp, $args){
     try{
         if($this->container->auth->check()){
@@ -226,7 +262,13 @@ class SandwichController extends Controller {
 
 
 
-    //---------create sandwich---------
+     /**
+     * Créer un sandwich
+     * @param $req
+     * @param $resp
+     * @param $args
+     */
+
     public function createSandwich($req, $resp, $args){
         try{
             if($req->getParam('categorie')){
@@ -236,7 +278,9 @@ class SandwichController extends Controller {
                 $sandwich->prix = (float) filter_var($req->getParam('prix'), FILTER_SANITIZE_STRING);
                 $sandwich->type_pain = filter_var($req->getParam('type'), FILTER_SANITIZE_STRING);
 
-            // Create sandwich
+             /**
+             * Créer un sandwich
+             */
             if($sandwich->save()) {
 
                 $sandwich->categories()->sync($req->getParam('categorie'));
@@ -251,13 +295,17 @@ class SandwichController extends Controller {
                             
        }catch(\Exception $e){
 
+    } 
 
+}
 
-       } 
-
-   }
-
-   //---------create sandwich---------
+    /**
+     * Créer un sandwich
+     * @param $req
+     * @param $resp
+     * @param $args
+     */
+    
    public function editSandwich($req, $resp, $args){
     try{
         
@@ -267,7 +315,9 @@ class SandwichController extends Controller {
             $sandwich->prix = (float) filter_var($req->getParam('prix'), FILTER_SANITIZE_STRING);
             $sandwich->type_pain = filter_var($req->getParam('type'), FILTER_SANITIZE_STRING);
 
-        // edit sandwich
+         /**
+         * Créer un sandwich
+         */
         if($sandwich->save()) {
 
             $this->showAllSandwichs($req, $resp, $args);
@@ -277,15 +327,17 @@ class SandwichController extends Controller {
                         
    }catch(\Exception $e){
 
-
-
    } 
 
 }
 
    
-
-   //-----deleteSandwich------
+     /** 
+      * Supprimer un sandwich
+     * @param $req
+     * @param $resp
+     * @param $args
+     */
    public function deleteSandwich($req, $resp, $args){
     try{
         if($this->container->auth->check()){

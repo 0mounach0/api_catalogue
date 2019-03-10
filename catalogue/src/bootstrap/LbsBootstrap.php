@@ -23,7 +23,7 @@ class LbsBootstrap {
                 $db->addConnection( $config );
 
                  /**
-                * Visible de tout fichier 
+                * Visibilité de tous les fichiers
                 */
                 $db->setAsGlobal(); 
 

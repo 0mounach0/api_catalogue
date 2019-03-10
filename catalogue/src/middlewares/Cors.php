@@ -2,8 +2,17 @@
 namespace lbs\middlewares;
 use lbs\controllers\Controller;
 
+/**
+ * Classe Cors extends de la classe Controller
+ */
 class Cors extends Controller {
 
+    /**
+     * @param $req
+     * @param $resp
+     * @param $next
+     * @return void
+     */
     public function checkAndAddCorsHeaders( $req, $resp, $next ) {
 /*         if(! $req->hasHeader('Origin'))
             return $this->jsonOutup($resp, 401, 'missing Origin header (cors)');

@@ -2,8 +2,19 @@
 namespace lbs\middlewares;
 use lbs\controllers\Controller;
 
+/**
+ * Classe Csrf extends de la classe Controller
+ */
 class Csrf extends Controller {
 
+    /**
+     * Fonction __invoke
+     *
+     * @param [type] $req
+     * @param [type] $resp
+     * @param [type] $next
+     * @return void
+     */
     public function __invoke( $req, $resp, $next ) {
 
         $this->container->view->getEnvironment()->addGlobal('csrf',[

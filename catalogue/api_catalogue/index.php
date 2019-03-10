@@ -5,6 +5,10 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require '../src/vendor/autoload.php';
 
 
+/**
+ * Container
+ */
+
 $container = new \Slim\Container(require_once __DIR__ . "/../src/conf/config.php"); 
 
 $app = new \Slim\App($container);
