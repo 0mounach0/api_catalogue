@@ -1,8 +1,18 @@
 <?php
 namespace lbs\errors;
 
+/**
+ * Class BadRequest
+ * @package lbs\errors
+ */
 class BadRequest  {
 
+    /**
+     * Erreur mauvaise requete
+     * @param $req
+     * @param $resp
+     * @return mixed
+     */
     static public function error($req, $resp){
 
         $data = [

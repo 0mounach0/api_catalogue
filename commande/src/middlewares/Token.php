@@ -9,11 +9,20 @@ use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException ;
 use Firebase\JWT\BeforeValidException;
 
-
+/**
+ * Class Token
+ * @package lbs\middlewares
+ */
 class Token extends Controller {
 
-    //------------ command token ----------
-    public function check ($rq, $rs, $next){
+    /**
+     * Token de la commande
+     * @param $rq
+     * @param $rs
+     * @param $next
+     * @return mixed
+     */
+     public function check ($rq, $rs, $next){
 
         $token = $rq->getQueryParam('token', null);
         if(is_null($token))
@@ -67,10 +76,15 @@ class Token extends Controller {
 
     }
 
-    //------------------ check jwt token --------------
-    public function checkJwt ($rq, $rs, $next){
+    /**
+     * Verification token JWT
+     * @param $rq
+     * @param $rs
+     * @param $next
+     * @return mixed
+     */
+     public function checkJwt ($rq, $rs, $next){
         try {
-
         $secret = "mounach";
         $h = $rq->getHeader('Authorization')[0] ;
         $tokenstring = sscanf($h, "Bearer %s")[0] ;
@@ -138,11 +152,14 @@ class Token extends Controller {
     
     }
 
-
-
-
-    //------------------check jwt token on commande creation -------------
-    public function checkJwtCreationCommande ($rq, $rs, $next){
+    /**
+     * Verification token JWT au moment de la creation de la commande
+     * @param $rq
+     * @param $rs
+     * @param $next
+     * @return mixed
+     */
+     public function checkJwtCreationCommande ($rq, $rs, $next){
         try {
 
         $secret = "mounach";
@@ -216,8 +233,14 @@ class Token extends Controller {
     
     }
 
-     //------------------ check jwt token on payement ------------
-     public function checkJwtPayement ($rq, $rs, $next){
+    /**
+     * Verification token JWT au paiement
+     * @param $rq
+     * @param $rs
+     * @param $next
+     * @return mixed
+     */
+      public function checkJwtPayement ($rq, $rs, $next){
         try {
 
         $secret = "mounach";

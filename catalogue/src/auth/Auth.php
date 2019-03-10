@@ -35,7 +35,7 @@ class Auth {
     * Vérifier les informations des caissiers
      * @param $email 
      * @param $password
-     */
+      */
     public function attempt($email, $password){
 
         $staff = Staff::where('email','=', $email)->first();

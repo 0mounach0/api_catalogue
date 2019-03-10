@@ -8,10 +8,20 @@ use Ramsey\Uuid\Uuid;
 use GuzzleHttp\Client;
 use Firebase\JWT\JWT;
 
+/**
+ * Class UserController
+ * @package lbs\controllers
+ */
 class UserController extends Controller {
 
-    //---------create user-----------
-    public function createUser($req, $resp, $args){
+    /**
+     * Creation utilisateur
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed
+     */
+     public function createUser($req, $resp, $args){
 
         try{
 
@@ -56,9 +66,14 @@ class UserController extends Controller {
 
     }
 
-
-    //--------- login user -----
-    public function loginUser($req, $resp, $args){
+    /**
+     * Login utilisateur
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed
+     */
+     public function loginUser($req, $resp, $args){
 
         try{
 
@@ -116,15 +131,17 @@ class UserController extends Controller {
 
 
         }catch(\Exception $e){
-
-
-
         }
 
     }
 
-    //------------ get user infos ---------
-
+    /**
+     * Recuperation des informations de l'utilisateur
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed
+     */
     public function getUser($req, $resp, $args){
 
         try{
@@ -167,9 +184,14 @@ class UserController extends Controller {
 
     }
 
-
-    //---------payerCommande-----------
-    public function payerCommande($req, $resp, $args){
+    /**
+     * Paiement commande
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed
+     */
+     public function payerCommande($req, $resp, $args){
 
         try{
 
@@ -272,8 +294,13 @@ class UserController extends Controller {
 
     }
 
-    //------------ get user commands history -----------
-
+    /**
+     * Recuperation historique des commandes du client
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed
+     */
     public function getUserCommandes($req, $resp, $args){
 
         try{
@@ -310,10 +337,4 @@ class UserController extends Controller {
 
     }
 
-
-
 }
-
-
-
-?>
