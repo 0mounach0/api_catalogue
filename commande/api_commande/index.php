@@ -10,8 +10,10 @@ $app = new \Slim\App($container);
 
 \lbs\bootstrap\LbsBootstrap::startEloquent($container->settings['config']);
 
+/**
+ * Cors
+ */
 
-//------- cors -------
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
@@ -19,8 +21,9 @@ $app->options('/{routes:.+}', function ($request, $response, $args) {
 $app->add(\lbs\middlewares\Cors::class . ':checkAndAddCorsHeaders');
 
 
-//------------------Commande-----------------
-//---- create commande ------
+/**
+ * Creation de commande
+ */
 $app->post('/commandes[/]',
 
     \lbs\controllers\CommandeController::class . ':createCommande'
@@ -29,7 +32,9 @@ $app->post('/commandes[/]',
     \lbs\middlewares\Token::class . ':checkJwtCreationCommande'
 );;
 
-//--- get command by id ----
+/**
+ * Recuperer une commande par son identifiant
+ */
 $app->get('/commandes/{id}[/]',
 
     \lbs\controllers\CommandeController::class . ':getCommande'
@@ -38,39 +43,54 @@ $app->get('/commandes/{id}[/]',
     \lbs\middlewares\Token::class . ':check'
 );
 
+/**
+ * Mise à jour de la date de livraison
+ */
 
-//---- update date livraison ----
 $app->patch('/commandes/{id}[/]',
 
     \lbs\controllers\CommandeController::class . ':updateDateLivraison'
 
 ); 
 
+/**
+ * Recuperation de la fature
+ */
 
-//--- get facture ----
-$app->get('/commandes/{id}/facture[/]',
+ $app->get('/commandes/{id}/facture[/]',
 
     \lbs\controllers\CommandeController::class . ':getFacture'
 
 );
 
+/**
+ * Compte client
+ */
 
-//------------------User-----------------
-//---- create a client account ----
+/**
+ * Création du compte d'utilisateur
+ */
+
 $app->post('/register[/]',
 
     \lbs\controllers\UserController::class . ':createUser'
 
 );
 
-//---- login client account ---
+/**
+ * Connexion client
+ */
+
 $app->post('/login[/]',
 
     \lbs\controllers\UserController::class . ':loginUser'
 
 );
 
-//---- get client infos ----
+/**
+ * Recupération des informations client
+ */
+
 $app->get('/users/{id}[/]',
 
     \lbs\controllers\UserController::class . ':getUser'
@@ -79,7 +99,10 @@ $app->get('/users/{id}[/]',
     \lbs\middlewares\Token::class . ':checkJwt'
 );
 
-//---- pay command -----
+/**
+ * Paiement de la commande
+ */
+
 $app->patch('/commandes/{id}/payement[/]',
 
     \lbs\controllers\UserController::class . ':payerCommande'
@@ -88,7 +111,10 @@ $app->patch('/commandes/{id}/payement[/]',
     \lbs\middlewares\Token::class . ':checkJwtPayement'
 ); 
 
-//---- get client commands history ------ 
+/**
+ * Recuperation de l'historique des achats du client
+ */
+
 $app->get('/users/{id}/commandes[/]',
 
     \lbs\controllers\UserController::class . ':getUserCommandes'
@@ -99,7 +125,9 @@ $app->get('/users/{id}/commandes[/]',
 
 
 
-//-----------
+/**
+ * Lancement de l'application
+ */
 $app->run();
 
 

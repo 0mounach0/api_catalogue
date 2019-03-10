@@ -1,7 +1,13 @@
-<?php  
+<?php
 
+/**
+ * Fichier config.ini (connexion BDD)
+ */
 $init = parse_ini_file("config.ini");
 
+/**
+ * Variable de connexion
+ */
 $config = [
     'settings' => [
         'displayErrorDetails' => true,

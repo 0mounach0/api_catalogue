@@ -11,10 +11,21 @@ use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException ;
 use Firebase\JWT\BeforeValidException;
 
+/**
+ * Class CommandeController
+ * @package lbs\controllers
+ */
 class CommandeController extends Controller {
 
-//----------------Commande------------------------------------
-    //---------Create Commande-------
+
+    /**
+     * Creation commande
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed|void
+     */
+
     public function createCommande($req, $resp, $args){
 
         try{
@@ -155,9 +166,14 @@ class CommandeController extends Controller {
         }
     }
 
-
-    //---------get commande by id and commande items---------
-    public function getCommande($req, $resp, $args){
+    /**
+     * Recuperation des identifiants et detail des commandes
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed|void
+     */
+     public function getCommande($req, $resp, $args){
 
         try{
 
@@ -207,9 +223,15 @@ class CommandeController extends Controller {
 
     }
 
+    /**
+     * Mise à jour date de livraison
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed|void
+     */
 
-    //---------updateDateLivraison-----------
-    public function updateDateLivraison($req, $resp, $args){
+     public function updateDateLivraison($req, $resp, $args){
 
         try{
 
@@ -248,9 +270,15 @@ class CommandeController extends Controller {
 
         }
 
-    } 
+    }
 
-    //---------get facture---------
+    /**
+     * Recuperation facture
+     * @param $req
+     * @param $resp
+     * @param $args
+     * @return mixed|void
+     */
     public function getFacture($req, $resp, $args){
 
         try{
