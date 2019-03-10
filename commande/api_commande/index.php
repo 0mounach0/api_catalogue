@@ -54,7 +54,7 @@ $app->patch('/commandes/{id}[/]',
 ); 
 
 /**
- * Recuperation de la fature
+ * Recuperation de la facture
  */
 
  $app->get('/commandes/{id}/facture[/]',
