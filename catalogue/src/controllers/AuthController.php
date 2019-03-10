@@ -4,10 +4,22 @@ namespace lbs\controllers;
 use lbs\models\Staff;
 
 
+/**
+ * Classe AuthControler extends de la classe Controller
+ */
 class AuthController extends Controller {
 
 
-    //---------login form staff---------
+    /**
+     * Form du login du caissier
+     */
+
+    /**
+     * @param $req 
+     * @param $resp
+     * @param $args
+     * login.twig
+     */
    public function loginForm($req, $resp, $args){
     try{
 
@@ -18,11 +30,12 @@ class AuthController extends Controller {
 
     } 
 
-    }
+ }
 
-  
 
-    //---------login form staff---------
+    /**
+     * Login du caissier
+     */
    public function login($req, $resp, $args){
     try{
 
@@ -42,9 +55,12 @@ class AuthController extends Controller {
 
     } 
 
-    }
+ }
 
-    //---------logout form staff---------
+    
+ /**
+  * Logout du caissier
+  */
    public function logout($req, $resp, $args){
     try{
 
@@ -57,11 +73,6 @@ class AuthController extends Controller {
 
     } 
 
-    }
-
-
-
-
-
+ }
 
 }

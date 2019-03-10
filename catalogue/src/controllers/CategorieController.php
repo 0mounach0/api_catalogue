@@ -4,10 +4,19 @@ namespace lbs\controllers;
 use lbs\models\Categorie;
 use lbs\models\Sandwich;
 
+/** 
+ * Classe CategorieController
+ */
 class CategorieController extends Controller {
 
-//----------------categorie------------------------------------
-    //---------get all categories-------
+
+    /**
+     * Catégorie
+     * Toutes les catégories
+     * @param $req
+     * @param $resp
+     * @param $args
+     */
     public function getCategories($req, $resp, $args){
 
         try{
@@ -30,7 +39,12 @@ class CategorieController extends Controller {
     }
 
 
-    //---------get categorie by id---------
+    /**
+     * Les catégories par ID
+     * @param $req
+     * @param $resp
+     * @param $args
+     */
     public function getCategorie($req, $resp, $args){
 
         try{
@@ -68,7 +82,12 @@ class CategorieController extends Controller {
     }
 
 
-    //---------get sandwich categories-------------
+    /**
+     * Le sandwich catégorie
+     * @param $req
+     * @param $resp
+     * @param $args
+     */
     public function getSandwichCategories($req, $resp, $args){
 
         try{

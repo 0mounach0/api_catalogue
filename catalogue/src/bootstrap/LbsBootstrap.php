@@ -1,17 +1,37 @@
 <?php
 namespace lbs\bootstrap;
 
+   /**
+    * Classe LbsBootstrap qui permet d'instancier la connexion pour notre application
+    */
 class LbsBootstrap {
-
+    
+       /**
+        * Fonction startEloquent
+        * @param $config
+        */
        public static function startEloquent($config)
        {
-
-                /* une instance de connexion  */
+               /**
+                * Une instance de connexion
+                */
                 $db = new \Illuminate\Database\Capsule\Manager();
+              
+                /**
+                * Configuration avec nos paramètre
+                */
+                $db->addConnection( $config );
 
-                $db->addConnection( $config ); /* configuration avec nos paramètres */
-                $db->setAsGlobal();            /* visible de tout fichier */
-                $db->bootEloquent();           /* établir la connexion */
+                 /**
+                * Visible de tout fichier 
+                */
+                $db->setAsGlobal(); 
+
+              
+                /**
+                * établir la connexion 
+                */
+                $db->bootEloquent();          
        }
 }
 

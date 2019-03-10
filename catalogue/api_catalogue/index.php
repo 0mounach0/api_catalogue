@@ -11,58 +11,80 @@ $app = new \Slim\App($container);
 
 \lbs\bootstrap\LbsBootstrap::startEloquent($container->settings['config']);
 
-//--- csrf ------------
+
+/**
+ * CSRF :cross-site request forgery
+ */
 $app->add(new \lbs\middlewares\Csrf($container));
 
 $app->add($container->csrf);
 
 
-//----- cors ---------
+/**
+ * CORS Cross-origin resource sharing
+ */
 $app->options('/{routes:.+}', function ($request, $response, $args) {
   return $response;
 });
 
 $app->add(\lbs\middlewares\Cors::class . ':checkAndAddCorsHeaders');
 
-//------------------catgorie-----------------
-//---- get all categories ----
+
+/**
+ * Catégorie
+ * Toutes les catégories
+ */
+
 $app->get('/categories[/]',
 
     \lbs\controllers\CategorieController::class . ':getCategories'
 
 );
 
-//--- get categorie by id -----
+
+/**
+ * Catégorie par ID
+ */
 $app->get('/categories/{id}[/]',
 
     \lbs\controllers\CategorieController::class . ':getCategorie'
-
 );
 
 
-//--- get sandwich categories ----
+/**
+ * Retourne les catégories d'un sandwich
+ */
+
+
 $app->get('/sandwichs/{id}/categories[/]',
 
   \lbs\controllers\CategorieController::class . ':getSandwichCategories'
 
 );
 
-//-----------------sandwich---------------------
-//--- get all sandwichs -----
+
+/**
+ * Sandwich
+ * Tous les sandwichs
+ */
 $app->get('/sandwichs[/]',
 
     \lbs\controllers\SandwichController::class . ':getSandwichs'
 
 );
 
-//--- get sandwich by id ----
+/**
+ * Avoir un sandwich par ID
+ */
 $app->get('/sandwichs/{id}[/]',
 
   \lbs\controllers\SandwichController::class . ':getSandwich'
 
 );
 
-//--- get categorie sandwichs ----
+/**
+ * Retourne les sandwichs d'une catégorie
+ */
 $app->get('/categories/{id}/sandwichs[/]',
 
   \lbs\controllers\SandwichController::class . ':getCategorieSandwichs'
@@ -70,44 +92,56 @@ $app->get('/categories/{id}/sandwichs[/]',
 );
 
 
-//-------------TWIG------------------
 
-//--- show all sandwichs ----
+/**
+ * TWIG
+ * Voir tous les sandwichs
+ */
 $app->get('/home[/]', 
 
   \lbs\controllers\SandwichController::class . ':showAllSandwichs'
 
 )->setName('home');
 
-//--- add sandwich form ----
+ /**
+  * Ajouter le sandwich dans le form
+  */
 $app->get('/addSandwich[/]', 
 
   \lbs\controllers\SandwichController::class . ':createSandwichForm'
 
 )->setName('createSandwich');
 
-//--- add sandwich ----
+/**
+ * Ajouter le sandwich
+ */
 $app->post('/addSandwich[/]', 
 
   \lbs\controllers\SandwichController::class . ':createSandwich'
 
 );
 
-//--- edit sandwich form ----
+/**
+ * Editer le sandwich dans le form
+ */
 $app->get('/editSandwich/{id}[/]', 
 
   \lbs\controllers\SandwichController::class . ':editSandwichForm'
 
 )->setName('editSandwich');
 
-//--- edit sandwich ---
+/**
+ * Ajouter l'édition du sandwich 
+ */
 $app->post('/editSandwich/{id}[/]', 
 
   \lbs\controllers\SandwichController::class . ':editSandwich'
 
 );
 
-//--- delete sandwich -----
+/**
+ * Supprimer le sandwich
+ */
 $app->get('/deleteSandwich/{id}[/]', 
 
   \lbs\controllers\SandwichController::class . ':deleteSandwich'
@@ -115,14 +149,19 @@ $app->get('/deleteSandwich/{id}[/]',
 );
 
 
-//--- login form ----
+/**
+ * Form de connexion
+ */
 $app->get('/login[/]', 
 
   \lbs\controllers\AuthController::class . ':loginForm'
 
 )->setName('login');
 
-//--- login staff ---
+
+/**
+ *  Login du caissier
+ */
 $app->post('/login[/]', 
 
   \lbs\controllers\AuthController::class . ':login'
@@ -130,17 +169,18 @@ $app->post('/login[/]',
 );
 
 
-//--- logout staff ---
+/**
+ * Déconnexion du caissier
+ */
 $app->get('/logout[/]', 
 
   \lbs\controllers\AuthController::class . ':logout'
 
 )->setName('logout');
 
-
-
-
-//-----------
+/**
+ * Run
+ */
 $app->run();
 
 
